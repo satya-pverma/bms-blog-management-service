@@ -35,6 +35,10 @@ type UserAsset = {
   item: string;
 };
 
+type Props = {
+  initialPosts: BlogPost[];
+};
+
 const categories = [
   'All',
   'Technology',
@@ -69,31 +73,33 @@ const isValidImageUrl = (url: string): boolean => {
   }
 };
 
-export default function Home() {
+export default function Home({ initialPosts }: Props) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [index, setIndex] = useState('1');
   const [items, setItems] = useState('10');
   const [asset, setAsset] = useState<UserAsset | null>(null);
-  const [loader, setLoader] = useState(true);
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [likes, setLikes] = useState<number[]>(posts.map(() => 34));
+  const [loader, setLoader] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
+  const [likes, setLikes] = useState<number[]>(initialPosts.map(() => 34));
 
   const router = useRouter();
 
   useEffect(() => {
-    setLoader(true);
     const raw = localStorage.getItem('indx');
     const auth = raw ? JSON.parse(raw) : null;
     setAsset(auth);
-    setLoader(false);
   }, []);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
   useEffect(() => {
+    if (activeCategory === 'All' && index === '1' && items === '10') {
+      // Use initialPosts for default state to avoid refetching
+      setPosts(initialPosts);
+      setLikes(initialPosts.map(() => 34));
+      setLoader(false);
+      return;
+    }
+
     setLoader(true);
     const fetchPosts = async () => {
       try {
@@ -102,6 +108,8 @@ export default function Home() {
         );
         if (!res.ok) {
           console.error('Failed to fetch posts:', res.statusText);
+          setPosts([]);
+          setLikes([]);
           setLoader(false);
           return;
         }
@@ -117,11 +125,17 @@ export default function Home() {
         setLoader(false);
       } catch (error) {
         console.error('Error fetching posts:', error);
+        setPosts([]);
+        setLikes([]);
         setLoader(false);
       }
     };
     fetchPosts();
-  }, [asset, activeCategory]);
+  }, [activeCategory, index, items]);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   const handleLike = (index: number) => {
     setLikes((prev) => {
@@ -214,6 +228,7 @@ export default function Home() {
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 192px"
+                        priority={i < 2} // Prioritize first two images for LCP
                       />
                     </div>
                   ) : null}
