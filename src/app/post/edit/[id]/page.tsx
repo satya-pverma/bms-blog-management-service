@@ -90,15 +90,15 @@ export default function EditPostPage() {
             try {
                 const res = await fetch(`/api/posts/${id}`);
                 const result = await res.json();
-                console.log(result)
+                // console.log(result)
                 if(result.stat) {
-                    setPost(result.data);
-
-                    setTitle(result?.data.meta.name);
-                    setCoverImage(result?.data?.wall?.link);
-                    //setAuthor(result?.data.author);
-                    setCategory(result?.data?.feat?.sort)
-                    setBody(result?.data?.meta?.memo);
+                    setPost(result.data.data);
+                    var data = result.data.data
+                    setTitle(data.meta.name);
+                    setCoverImage(data?.wall?.link);
+                    //setAuthor(data.author);
+                    setCategory(data?.feat?.sort)
+                    setBody(data?.meta?.memo);
                 }
 
             } catch (err) {

@@ -2,6 +2,13 @@
 import { NextResponse, NextRequest } from 'next/server';
 import axios from 'axios';
 
+
+type Context = {
+  params: {
+    id: string;
+  };
+};
+
 export async function PUT(req: NextRequest) {
   const body = await req.json();
   const { data } = body;
@@ -56,24 +63,39 @@ export async function DELETE(req: NextRequest) {
 }
 
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+
+
+export async function GET(req: NextRequest) {
   try {
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop();
 
-    // const { searchParams } = new URL(req.url);
-    // const item = searchParams.get('id');
-   
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: 'Missing post ID in route params' },
+        { status: 400 }
+      );
+    }
 
-    // Replace with your actual external API endpoint
-    const externalApi = 'https://us-east-1.aws.data.mongodb-api.com/app/application-0-zigdt/endpoint/blog/details/id';
+    const apiUrl = 'https://us-east-1.aws.data.mongodb-api.com/app/application-0-zigdt/endpoint/blog/details/id';
 
-    const response = await axios.post(externalApi, {data:{ item: params.id}});
+    const response = await axios.post(apiUrl, {
+      data: { item: id },
+      srvc: '8e991290ee8e490bb6adb9811f9b8f93',
+    });
 
-    // Assuming the external API returns a JSON array of posts
-    return NextResponse.json(response.data);
+    return NextResponse.json({
+      success: true,
+      stat: true,
+      data: response.data,
+    });
   } catch (error: any) {
-    console.error('Error fetching posts:', error.message);
+    // console.error('Error fetching post details:', error.message);
     return NextResponse.json(
-      { error: 'Failed to fetch posts' },
+      {
+        success: false,
+        message: error.response?.data?.memo || 'Failed to fetch post details',
+      },
       { status: 500 }
     );
   }

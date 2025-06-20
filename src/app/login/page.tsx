@@ -50,8 +50,8 @@ export default function Home() {
       
 
       if (!res.ok) {
-         setShowToast({stat:true, color:'red', message:'Error: Error while login, Try Again' })
-        setError(result.message || "Something went wrong.");
+      setShowToast({stat:true, color:'red', message:'Error: Error while login, Try Again' })
+      setError(result.message || "Something went wrong.");
       setLoader(false)
       setSubmit(false)
         return;
@@ -62,7 +62,8 @@ export default function Home() {
 
 
       localStorage.setItem("indx", JSON.stringify(result.data))
-      router.push("/")
+      setTimeout(()=>{router.push("/")},1500)
+      
       
     } catch (err) {
       // console.error(err);

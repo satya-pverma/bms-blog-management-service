@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
     // Assuming the external API returns a JSON array of posts
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error('Error fetching posts:', error.message);
+    // console.error('Error fetching posts:', error.message);
     return NextResponse.json(
       { error: 'Failed to fetch posts' },
       { status: 500 }

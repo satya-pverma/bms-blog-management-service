@@ -110,7 +110,7 @@ export default function Home() {
       const res = await fetch(`/api/posts?index=${index}&items=${items}&category=${activeCategory}`);
       const result = await res.json();
 
-      console.log(result)
+      // console.log(result)
       if (!res.ok) {
         return
       }
@@ -191,7 +191,7 @@ export default function Home() {
                     <button
                       key={category}
                       onClick={() => {
-                        console.log(category);
+                        // console.log(category);
                         setActiveCategory(category)
                       }
                       }
