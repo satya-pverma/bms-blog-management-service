@@ -2,10 +2,13 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import LocalDateTime from './DtaeTime';
 
 type CommentItem = {
   sender: string;
   text: string;
+  crts: number;
+
 };
 
 type CommentBoxProps = {
@@ -48,7 +51,7 @@ const CommentBox = ({id, list }: CommentBoxProps) => {
 const AddComment = async()=>{
     setLoader(true)
     setSubmit(true)
-    var datx = {item: id, text:comment, sender: asset?.name || 'anonymous' }
+    var datx = {item: id, text:comment, sender: asset?.name || 'anonymous', crts: Date.now() }
      const res = await fetch("/api/comment", {
         method: "POST",
         headers: {
@@ -117,16 +120,20 @@ const AddComment = async()=>{
             </div> */}
 
         <div ref={scrollRef} className="space-y-6 max-h-72 overflow-y-auto pr-1 scrollbar-hide">
-              {commentArray.map((item: { sender: string; text: string }, i: number) => (
+              {commentArray.map((item: { sender: string; text: string, crts: number }, i: number) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
                     {'U'}
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <p className="text-sm font-medium text-gray-800">{item?.sender}</p>
+                      <p className="text-sm font-small text-gray-600" style={{fontSize:'12px'}}>{item?.sender}</p>
+                        <span className="text-xs text-gray-400">
+                        <LocalDateTime timestamp={item.crts} />
+                        {/* {item.crts ? new Date(item.crts).toISOString() : ''} */}
+                      </span>
                     </div>
-                    <p className="text-sm text-gray-700 leading-snug">
+                    <p className="text-sm text-gray-900 leading-snug">
                       {item?.text}
                     </p>
                   </div>
