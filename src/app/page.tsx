@@ -53,10 +53,10 @@ const isValidImageUrl = (url: string): boolean => {
 
 // Generate metadata server-side
 export async function generateMetadata(): Promise<Metadata> {
-  console.log('Generating metadata for homepage', {
-    mediaLink: metadata.media?.link,
-    isValid: isValidImageUrl(metadata.media?.link || ''),
-  });
+  // console.log('Generating metadata for homepage', {
+  //   mediaLink: metadata.media?.link,
+  //   isValid: isValidImageUrl(metadata.media?.link || ''),
+  // });
   return {
     title: metadata.name,
     description: metadata.memo,
@@ -94,17 +94,17 @@ export default async function Page() {
     );
 
     if (!res.ok) {
-      console.error('Failed to fetch posts:', res.statusText);
+      // console.error('Failed to fetch posts:', res.statusText);
       return <Home initialPosts={[]} />;
     }
 
     const result = await res.json();
     const posts: BlogPost[] = result?.data?.list || [];
-    console.log('Fetched posts for homepage:', posts.length);
+    // console.log('Fetched posts for homepage:', posts.length);
 
     return <Home initialPosts={posts} />;
   } catch (error) {
-    console.error('Error fetching posts for homepage:', error);
+    // console.error('Error fetching posts for homepage:', error);
     return <Home initialPosts={[]} />;
   }
 }

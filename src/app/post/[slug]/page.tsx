@@ -3,6 +3,7 @@ import Image from 'next/image';
 import StickyNavbar from '@/components/navbar';
 import NoBlogsFound from '@/components/NoBlogFound';
 import type { Metadata, NextPage } from 'next';
+import CommentBox from '@/components/CommentBox';
 
 // Define Props type to match Next.js expectations
 type Props = {
@@ -72,6 +73,7 @@ const PostDetailsPage: NextPage<Props> = async ({ params }) => {
 
   if (!result?.stat) return <NoBlogsFound />;
   const post = result.data;
+  const comment = result?.data?.cmnt || []
 
   return (
     <>
@@ -133,12 +135,14 @@ const PostDetailsPage: NextPage<Props> = async ({ params }) => {
         </div>
 
         {/* Right Side: Comments */}
-        <div className="w-full lg:w-1/3 space-y-6">
+          <CommentBox  id = {post.item} list ={comment} />
+
+        {/* <div className="w-full lg:w-1/3 space-y-6">
           <div className="bg-white p-6 rounded-2xl shadow-md">
-            <h2 className="text-xl font-semibold text-gray-900 mb-5">Comments</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-5">Comments</h2> */}
 
             {/* Comments List */}
-            <div className="space-y-6 max-h-72 overflow-y-auto pr-1">
+            {/* <div className="space-y-6 max-h-72 overflow-y-auto pr-1">
               {[...Array(3)].map((_, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
@@ -161,10 +165,10 @@ const PostDetailsPage: NextPage<Props> = async ({ params }) => {
                   </div>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             {/* Add Comment */}
-            <form className="space-y-3 mt-6">
+            {/* <form className="space-y-3 mt-6">
               <textarea
                 rows={3}
                 placeholder="Write your comment..."
@@ -178,7 +182,10 @@ const PostDetailsPage: NextPage<Props> = async ({ params }) => {
               </button>
             </form>
           </div>
-        </div>
+        </div> */}
+
+
+        
       </div>
     </>
   );

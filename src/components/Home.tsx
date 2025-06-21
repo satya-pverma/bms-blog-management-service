@@ -107,7 +107,7 @@ export default function Home({ initialPosts }: Props) {
           `/api/posts?index=${index}&items=${items}&category=${activeCategory}`
         );
         if (!res.ok) {
-          console.error('Failed to fetch posts:', res.statusText);
+        //   console.error('Failed to fetch posts:', res.statusText);
           setPosts([]);
           setLikes([]);
           setLoader(false);
@@ -115,7 +115,7 @@ export default function Home({ initialPosts }: Props) {
         }
         const result = await res.json();
         if (!result?.data?.list) {
-          console.error('No posts found in API response');
+        //   console.error('No posts found in API response');
           setPosts([]);
           setLikes([]);
         } else {
@@ -124,7 +124,7 @@ export default function Home({ initialPosts }: Props) {
         }
         setLoader(false);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        // console.error('Error fetching posts:', error);
         setPosts([]);
         setLikes([]);
         setLoader(false);

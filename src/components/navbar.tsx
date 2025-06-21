@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+
 const StickyNavbar = () => {
  
   const router = useRouter()
@@ -39,7 +40,7 @@ useEffect(() => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-sm py-3">
+    <nav className="sticky top-0 z-50 bg-white shadow-sm py-3 ">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         {/* Logo and Menu items */}
         <div className="flex items-center space-x-8">
@@ -99,7 +100,6 @@ useEffect(() => {
           )} */}
         </div>
         }
-
         {
            !loader && !asset && <div>
             <Link
